@@ -1,3 +1,7 @@
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import streamlit as st
 from components.course_card import course_card
 from components.progress import progress_card

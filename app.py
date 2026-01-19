@@ -1,88 +1,150 @@
 import streamlit as st
+from components.course_card import course_card
+from components.progress import progress_card
 
-st.set_page_config(page_title="Mini LMS", layout="wide")
+# ------------------ PAGE CONFIG ------------------
+st.set_page_config(
+    page_title="Mini LMS",
+    page_icon="🚀",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
-# --- THEME LOAD ---
+# ------------------ LOAD THEME ------------------
 with open("styles/theme.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-st.title("🚀 Mini Learning Management System")
-st.caption("Frontend Demo Mode (Authentication Disabled)")
+# ------------------ HEADER ------------------
+st.markdown(
+    """
+    <h1>🚀 Mini Learning Management System</h1>
+    <p style="color:#94a3b8;">Frontend Demo Mode (Authentication Disabled)</p>
+    """,
+    unsafe_allow_html=True
+)
 
-role = st.selectbox("Select Role", ["Student", "Teacher", "Admin"])
+st.write("This is a **frontend-only prototype** of a Learning Management System.")
+st.write("Use the role selector below to preview different dashboards.")
 
-st.markdown("---")
+# ------------------ ROLE SELECTOR ------------------
+role = st.selectbox("🎭 Select Role", ["student", "teacher", "admin"])
 
-# =======================
-# STUDENT UI
-# =======================
-if role == "Student":
-    st.header("🎓 Student Dashboard")
+st.divider()
 
-    col1, col2, col3 = st.columns(3)
-    col1.metric("Courses Enrolled", "5")
-    col2.metric("Lessons Completed", "28")
-    col3.metric("Progress", "62%")
-
-    st.subheader("📘 My Courses")
-    st.info("Python Basics")
-    st.info("Data Structures")
-    st.info("Cloud Fundamentals")
-
-    st.progress(0.62)
-
-    st.subheader("📝 Quizzes")
-    st.write("Upcoming quiz: Python Fundamentals")
-
-    st.subheader("💬 Forum")
-    st.write("Ask questions, discuss topics")
-
-# =======================
-# TEACHER UI
-# =======================
-elif role == "Teacher":
-    st.header("👩‍🏫 Teacher Dashboard")
+# ==================================================
+# STUDENT DASHBOARD
+# ==================================================
+if role == "student":
+    st.subheader("🎓 Student Dashboard")
 
     col1, col2, col3 = st.columns(3)
-    col1.metric("Courses Created", "4")
-    col2.metric("Students Enrolled", "128")
-    col3.metric("Quizzes Created", "12")
+    with col1:
+        progress_card("Courses Enrolled", 5)
+    with col2:
+        progress_card("Completed", 2)
+    with col3:
+        progress_card("Pending", 3)
 
-    st.subheader("📚 Manage Courses")
-    course_name = st.text_input("New Course Name")
-    if st.button("Add Course"):
-        st.success(f"Course '{course_name}' added (demo)")
+    st.markdown("### 📘 My Courses")
+    course_card("Python Basics", "Learn Python from scratch", 60)
+    course_card("Web Development", "HTML, CSS, JavaScript fundamentals", 35)
+    course_card("Data Science", "Intro to ML & Data Analysis", 20)
 
-    st.subheader("📖 Lessons")
-    lesson = st.text_input("New Lesson Title")
-    if st.button("Add Lesson"):
-        st.success(f"Lesson '{lesson}' added (demo)")
+    st.markdown("### 🧠 Quizzes")
+    course_card("Python Quiz 1", "Variables, Loops & Functions", 80)
+    course_card("Web Dev Quiz", "HTML & CSS Basics", 50)
 
-    st.subheader("👥 Students")
-    for s in ["Aarohi", "Rahul", "Sneha", "Meena"]:
-        st.markdown(f"- {s}")
+    st.markdown("### 💬 Forum Activity")
+    st.markdown(
+        """
+        <div class="glass-card">
+            <p>🗨 <b>New Discussion:</b> "Best Python IDE?"</p>
+            <p>🗨 <b>Reply:</b> "Use VS Code with extensions"</p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
-    st.subheader("🛡 Forum Moderation")
-    st.warning("Flagged post: Inappropriate content")
+# ==================================================
+# TEACHER DASHBOARD
+# ==================================================
+elif role == "teacher":
+    st.subheader("👩‍🏫 Teacher Dashboard")
 
-# =======================
-# ADMIN UI
-# =======================
-elif role == "Admin":
-    st.header("🛠 Admin Dashboard")
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        progress_card("Courses Created", 4)
+    with col2:
+        progress_card("Active Students", 120)
+    with col3:
+        progress_card("Quizzes Published", 8)
 
-    col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Total Users", "320")
-    col2.metric("Students", "240")
-    col3.metric("Teachers", "68")
-    col4.metric("Courses", "32")
+    st.markdown("### 📚 Manage Courses")
+    course_card("Advanced Python", "OOP, Decorators, Async", 90)
+    course_card("React JS", "Frontend Framework", 70)
 
-    st.subheader("👥 User Management")
-    username = st.text_input("Username")
-    role_select = st.selectbox("Assign Role", ["Student", "Teacher", "Admin"])
-    if st.button("Create User"):
-        st.success(f"User '{username}' created as {role_select} (demo)")
+    st.markdown("### 📝 Create Lesson")
+    st.markdown(
+        """
+        <div class="glass-card">
+            <p>📌 <b>Lesson Title:</b> Python Functions</p>
+            <p>📌 <b>Status:</b> Draft</p>
+            <button>Create Lesson</button>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
-    st.subheader("📊 Platform Health")
-    st.progress(0.87)
-    st.success("System operating normally")
+    st.markdown("### 👨‍🎓 Students")
+    st.markdown(
+        """
+        <div class="glass-card">
+            <p>👤 John Doe — 78%</p>
+            <p>👤 Jane Smith — 92%</p>
+            <p>👤 Alex Johnson — 64%</p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+# ==================================================
+# ADMIN DASHBOARD
+# ==================================================
+elif role == "admin":
+    st.subheader("🛠 Admin Dashboard")
+
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        progress_card("Total Users", 240)
+    with col2:
+        progress_card("Total Courses", 18)
+    with col3:
+        progress_card("Reports", 6)
+
+    st.markdown("### 👥 User Management")
+    st.markdown(
+        """
+        <div class="glass-card">
+            <p>👤 John Doe — Student</p>
+            <p>👤 Jane Smith — Teacher</p>
+            <p>👤 Admin User — Admin</p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    st.markdown("### 📊 System Analytics")
+    st.markdown(
+        """
+        <div class="glass-card">
+            <p>📈 Daily Active Users: 58</p>
+            <p>📉 Bounce Rate: 22%</p>
+            <p>📊 Completion Rate: 74%</p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+# ------------------ FOOTER ------------------
+st.divider()
+st.caption("✨ Mini LMS — Frontend Demo for Academic Project")

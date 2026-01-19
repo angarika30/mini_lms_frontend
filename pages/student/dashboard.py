@@ -8,7 +8,7 @@ with open("styles/theme.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 st.markdown("## 🎓 Student Dashboard")
-st.caption("Your personalized learning overview")
+st.caption("Your learning overview")
 
 col1, col2, col3 = st.columns(3)
 with col1:
@@ -20,7 +20,7 @@ with col3:
 
 st.markdown("### 📘 Active Courses")
 course_card("Python Basics", "Learn Python from scratch", 60)
-course_card("Web Development", "HTML, CSS & JavaScript", 35)
+course_card("Web Development", "HTML, CSS & JavaScript fundamentals", 35)
 course_card("Data Science", "Intro to ML & Data Analysis", 20)
 
 st.markdown("### 🏆 Achievements")

@@ -1,24 +1,36 @@
 import streamlit as st
+from components.course_card import course_card
+from components.progress import progress_card
 
 st.set_page_config(page_title="Student Dashboard", layout="wide")
 
+with open("styles/theme.css") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
 st.markdown("## 🎓 Student Dashboard")
-st.caption("Overview of your learning progress")
+st.caption("Your personalized learning overview")
 
-col1, col2, col3, col4 = st.columns(4)
-
+col1, col2, col3 = st.columns(3)
 with col1:
-    st.metric("📘 Courses", "6")
-
+    progress_card("Courses Enrolled", 5)
 with col2:
-    st.metric("📖 Lessons Completed", "28")
-
+    progress_card("Lessons Completed", 28)
 with col3:
-    st.metric("📝 Quizzes", "9")
+    progress_card("Overall Progress", "62%")
 
-with col4:
-    st.metric("🏆 Progress", "68%")
+st.markdown("### 📘 Active Courses")
+course_card("Python Basics", "Learn Python from scratch", 60)
+course_card("Web Development", "HTML, CSS & JavaScript", 35)
+course_card("Data Science", "Intro to ML & Data Analysis", 20)
 
-st.markdown("---")
-
-st.success("🚀 Keep going! You're doing great.")
+st.markdown("### 🏆 Achievements")
+st.markdown(
+    """
+    <div class="glass-card">
+        <p>🥇 Completed 20+ Lessons</p>
+        <p>🥈 5 Quizzes Passed</p>
+        <p>🥉 7-Day Learning Streak</p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)

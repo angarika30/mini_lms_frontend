@@ -2,6 +2,9 @@ import streamlit as st
 
 st.set_page_config(page_title="Teacher Quizzes", layout="wide")
 
+with open("styles/theme.css") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
 st.markdown("## 📝 Quiz Management")
 st.caption("Create and manage quizzes")
 
@@ -15,3 +18,16 @@ if st.button("Add Quiz"):
         st.success("✅ Quiz added (demo)")
     else:
         st.warning("Please enter a question")
+
+st.markdown("---")
+
+st.markdown("### Existing Quizzes")
+st.markdown(
+    """
+    <div class="glass-card">
+        <p>📝 Python Quiz 1</p>
+        <p>📝 Web Dev Quiz</p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)

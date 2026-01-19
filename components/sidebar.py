@@ -1,30 +1,27 @@
 import streamlit as st
 
-def render_sidebar(role: str):
+def render_sidebar():
     st.sidebar.markdown("## 📘 Mini LMS")
     st.sidebar.caption("Frontend Demo Mode")
 
     st.sidebar.markdown("---")
 
-    if role == "student":
-        st.sidebar.page_link("student/dashboard.py", label="🎓 Dashboard")
-        st.sidebar.page_link("student/courses.py", label="📘 Courses")
-        st.sidebar.page_link("student/my_learning.py", label="📈 My Learning")
-        st.sidebar.page_link("student/quizzes.py", label="📝 Quizzes")
-        st.sidebar.page_link("student/forum.py", label="💬 Forum")
+    role = st.sidebar.selectbox("🎭 Select Role", ["Student", "Teacher", "Admin"])
 
-    elif role == "teacher":
-        st.sidebar.page_link("teacher/dashboard.py", label="👩‍🏫 Dashboard")
-        st.sidebar.page_link("teacher/manage_courses.py", label="📚 Manage Courses")
-        st.sidebar.page_link("teacher/course_editor.py", label="✏ Course Editor")
-        st.sidebar.page_link("teacher/lessons.py", label="📖 Lessons")
-        st.sidebar.page_link("teacher/quizzes.py", label="📝 Quizzes")
-        st.sidebar.page_link("teacher/students.py", label="👥 Students")
-        st.sidebar.page_link("teacher/forum_moderation.py", label="🛡 Forum Moderation")
+    if role == "Student":
+        page = st.sidebar.radio(
+            "📂 Student Menu",
+            ["Dashboard", "Courses", "My Learning", "Quizzes", "Forum"]
+        )
+    elif role == "Teacher":
+        page = st.sidebar.radio(
+            "📂 Teacher Menu",
+            ["Dashboard", "Manage Courses", "Course Editor", "Lessons", "Quizzes", "Students", "Forum Moderation"]
+        )
+    else:
+        page = st.sidebar.radio(
+            "📂 Admin Menu",
+            ["Dashboard", "User Management"]
+        )
 
-    elif role == "admin":
-        st.sidebar.page_link("admin/dashboard.py", label="🛠 Dashboard")
-        st.sidebar.page_link("admin/user_management.py", label="👤 User Management")
-
-    st.sidebar.markdown("---")
-    st.sidebar.info("🚀 UI Demo Mode")
+    return role, page
